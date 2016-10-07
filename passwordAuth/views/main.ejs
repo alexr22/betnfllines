@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+ul.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Float the list items side by side */
+ul.tab li {float: left;}
+
+/* Style the links inside the list items */
+ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-spacing: 10px;
+
+}
+
+.awayTeams{
+  padding:10px;
+  text-align: center;
+  background-color: #ccc;
+}
+.homeTeams {
+  padding:10px;
+  text-align: center;
+  background-color: white;
+}
+.allTeams {
+  margin: 15px;
+  width: 100px;
+}
+/* Change background color of links on hover */
+ul.tab li a:hover {background-color: #ddd;}
+
+/* Create an active/current tablink class */
+ul.tab li a:focus, .active {background-color: #ccc;}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+.login {
+	float: left;
+	display: block;
+	margin:10px;
+}
+.signup {
+	float: left;
+	display: block;
+	margin: 10px;
+}
+#tableHeader {
+  text-align: center;
+
+}
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+#wagerAmount {
+  position: absolute;
+}
+#submitBet {
+  text-align: center;
+}
+</style>
+  <meta charset="UTF-8">
+  <title>Main Page</title>
+</head>
+<body>
+<body>
+
+
+  <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">x</span>
+    <p>Please select your team and how much you want to bet.</p>
+
+    <form action="/placeBet" method="post">
+        <input type="radio" name="team" value="awayTeam" id="awayTeamBet" checked>
+        <input type="number" id="wagerAmount" name="amount"><br>
+        <input type="radio" name="team" value="homeTeam" id="homeTeamBet">
+        
+        <input type="submit" id="submitBet">
+
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<div id="container">
+<ul class="tab">
+  <li><a href="#" id="weeks1" class="tablinks" onclick="openWeek(event, 'week1')">Week 1</a></li>
+  <li><a href="#" id="weeks2" class="tablinks" onclick="openWeek(event, 'week2')">2</a></li>
+  <li><a href="#" id="weeks3" class="tablinks" onclick="openWeek(event, 'week3')">3</a></li>
+  <li><a href="#" id="weeks4" class="tablinks" onclick="openWeek(event, 'week4')">4</a></li>
+  <li><a href="#" id="weeks5" class="tablinks" onclick="openWeek(event, 'week5')">5</a></li>
+  <li><a href="#" id="weeks6" class="tablinks" onclick="openWeek(event, 'week6')">6</a></li>
+  <li><a href="#" id="weeks7" class="tablinks" onclick="openWeek(event, 'week7')">7</a></li>
+  <li><a href="#" id="weeks8" class="tablinks" onclick="openWeek(event, 'week8')">8</a></li>
+  <li><a href="#" id="weeks9" class="tablinks" onclick="openWeek(event, 'week9')">9</a></li>
+  <li><a href="#" id="weeks10" class="tablinks" onclick="openWeek(event, 'week10')">10</a></li>
+  <li><a href="#" id="weeks11" class="tablinks" onclick="openWeek(event, 'week11')">11</a></li>
+  <li><a href="#" id="weeks12" class="tablinks" onclick="openWeek(event, 'week12')">12</a></li>
+  <li><a href="#" id="weeks13" class="tablinks" onclick="openWeek(event, 'week13')">13</a></li>
+  <li><a href="#" id="weeks14" class="tablinks" onclick="openWeek(event, 'week14')">14</a></li>
+  <li><a href="#" id="weeks15" class="tablinks" onclick="openWeek(event, 'week15')">15</a></li>
+  <li><a href="#" id="weeks16" class="tablinks" onclick="openWeek(event, 'week16')">16</a></li>
+  <li><a href="#" id="weeks17" class="tablinks" onclick="openWeek(event, 'week17')">17</a></li>
+  <li><a href="#" id="weeks18" class="tablinks" onclick="openWeek(event, 'playoffs')">Playoffs</a></li>
+  <li><a href="#" id="weeks19" class="tablinks"></a></li>
+
+</ul>
+</div>
+<div id="week1" class="tabcontent">
+  <h3>Week 1</h3>
+</div>
+<div id="week2" class="tabcontent">
+  <h3>Week 2</h3>
+</div>
+<div id="week3" class="tabcontent">
+  <h3>Week 3</h3>
+</div>
+<div id="week4" class="tabcontent">
+  <h3>Week 4</h3>
+</div>
+<div id="week5" class="tabcontent">
+  <h3>Week 5</h3>
+</div>
+<div id="week6" class="tabcontent">
+  <h3>Week 6</h3>
+</div>
+<div id="week7" class="tabcontent">
+  <h3>Week 7</h3>
+</div>
+<div id="week8" class="tabcontent">
+  <h3>Week 8</h3>
+</div>
+<div id="week9" class="tabcontent">
+  <h3>Week 9</h3>
+</div>
+<div id="week10" class="tabcontent">
+  <h3>Week 10</h3>
+</div>
+<div id="week11" class="tabcontent">
+  <h3>Week 11</h3>
+</div>
+<div id="week12" class="tabcontent">
+  <h3>Week 12</h3>
+</div>
+<div id="week13" class="tabcontent">
+  <h3>Week 13</h3>
+</div>
+<div id="week14" class="tabcontent">
+  <h3>Week 14</h3>
+</div>
+<div id="week15" class="tabcontent">
+  <h3>Week 15</h3>
+</div>
+<div id="week16" class="tabcontent">
+  <h3>Week 16</h3>
+</div>
+<div id="week17" class="tabcontent">
+  <h3>Week 17</h3>
+</div>
+<div id="playoffs" class="tabcontent">
+  <h3>Playoffs</h3>
+
+</div>
+<script>
+
+// $.getJSON('/login', function(data) {
+//   console.log(data);
+// })
+
+function openWeek(evt, weekNumber) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = $(".tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = $(".tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    document.getElementById(weekNumber).style.display = "block";
+    
+    evt.currentTarget.className += " active";
+    var wNumber = parseInt(weekNumber.replace(/\D/g,''));
+
+    //makes the table for whichever week the person clicks on
+    $('#week' + wNumber).empty();
+    $('#week' + wNumber).append('<h3>Week' + wNumber + '</h3><tr id="tableHeader"><td>Game</td><td>Line</td><td>Place Bet</td></tr>')
+
+    //gets the JSON for the specific week on each click
+    $.getJSON('/main/' + wNumber, function(data) {
+    	console.log(data)
+    	for (var i=0; i<data.length; i++) {
+        if (data[i].homeLine) {
+        		$('#week' + wNumber).append('<tr class="awayTeams allTeams"><td>' + data[i].awayTeam + '</td><td>' + data[i].awayLine + '</td><td><button class="awayTeam" data-id="'+ data[i]._id + '">Place Bet!</button></td></tr><tr class="homeTeams allTeams"><td>@' + data[i].homeTeam + '</td><td>' + data[i].homeLine + '</td></tr>')
+
+                        // Get the modal
+            var modal = document.getElementById('myModal');
+
+            // Get the button that opens the modal
+             var btn = $('button')
+            // console.log(btn);
+            // $('button').on('click', function() {
+            //   $.ajax({
+            //     method: "GET",
+            //     url: 'mongodb://localhost/nfllines'
+            //     data: 
+            //   }).done(function(data) {
+
+            //   })
+            // })
+  
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on the button, open the modal and add the correct teams to the text
+
+            $(btn).on('click', function() {
+
+                modal.style.display = "block";
+                $('#awayTeamBet').after(data[i].awayTeam)
+                //$('#homeTeamBet').after(data[].homeTeam)
+
+            })
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+          }else {
+            $('#week' + wNumber).append('<tr class="awayTeams allTeams"><td>' + data[i].awayTeam + '</td><td>N/A</td><td>No line yet.</td></tr><tr class="homeTeams allTeams"><td> @ ' + data[i].homeTeam + '</td><td>N/A</td><td>No line yet.</td></tr>')
+          }
+
+
+    	}
+
+
+
+    })
+    // .then($('#week' + wNumber).append())
+
+
+}
+</script>
+
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><script src="app.js"></script>
+ -->
+</body>
+</html>
