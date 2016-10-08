@@ -1,6 +1,6 @@
 var Game = require('./models/game.js');
 var Bet = require('./models/bet.js')
-
+var User = require('./models/user.js')
 module.exports = function(app, passport) {
 
     // =====================================
@@ -59,8 +59,40 @@ module.exports = function(app, passport) {
 
     //route to post bet to user database
     app.post('/placeBet', function(req, res) {
+        var betEntry = new Bet({
+            team: req.body.team,
+            line: 10.5,
+            wagerAmount: req.body.amount,
+            winAmount: req.body.amount*.90909090
 
+        });
+        betEntry.save(function(err) {
+            if (err) {
+                console.log(err)
+            }else {
+                console.log('Successfully added')
+            }
+        })
+        res.redirect('/main')
     })
+    //route to link the bet to the user
+    app.post('/placeBet', function(req, res) {
+        console.log("fefefe");
+        User.update({
+        
+            $set: {
+                '_betId': req.bet._id
+            }
+        }, function(err, edited) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(edited)
+            }
+        })
+    })
+
+
     //gets the games for each week and sends them to main.ejs
     app.get('/main/:week', function(req, res) {
         Game.find({'week': req.params.week}, function(err, found) {
@@ -71,28 +103,7 @@ module.exports = function(app, passport) {
             }
         }) 
     })
-    //figuring out button id's
-    // app.get('/main/', function(req, res) {
-    //     $('.awayTeam').on('click', function(err, found) {
-    //         if (err) {
-    //             console.log(err)
-    //         } else {
-    //             $.ajax({
-    //                 method: "GET",
-    //                 url: '/main',
-    //                 data: $(this).attr('data-id'),
-    //                 }).done(function(data){
-    //                     console.log(req.data)
-                    
-    //             })
-    //         }
-    //     })
-    // })
 
-
-    // =====================================
-    // LOGOUT ==============================
-    // =====================================
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
@@ -112,17 +123,5 @@ function isLoggedIn(req, res, next) {
 
 
 
-// $(document).on('click', function() {
-//     var thisId = $(this).attr('data-id');
 
-//     console.log(thisId);
-//     // Game.find({'_id': req.params.id}, function(err, found) {
-//     //     if(err) {
-//     //         console.log(err);
-
-//     //     }else {
-//     //         res.json(found)
-//     //     }
-//     // })
-// })
 

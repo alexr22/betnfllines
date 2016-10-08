@@ -10,7 +10,9 @@ ul.tab {
     border: 1px solid #ccc;
     background-color: #f1f1f1;
 }
-
+body  { 
+    background: #add8e6;
+}
 /* Float the list items side by side */
 ul.tab li {float: left;}
 
@@ -24,11 +26,22 @@ ul.tab li a {
     transition: 0.3s;
     font-size: 17px;
 }
-
+table {
+  vertical-align: center;
+    position: fixed;
+    left: 25%;
+}
 table, th, td {
+
     border: 1px solid black;
     border-spacing: 10px;
+    align: center;
+    padding: 2px;
 
+}
+td {
+  padding-right: 6px;
+  padding-left: 6px;
 }
 
 .awayTeams{
@@ -68,10 +81,7 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 	display: block;
 	margin: 10px;
 }
-#tableHeader {
-  text-align: center;
 
-}
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -111,42 +121,22 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 }
 #wagerAmount {
   position: absolute;
+  margin-left: 65px;
+
 }
 #submitBet {
   text-align: center;
+  margin-left: 120px;
 }
 </style>
   <meta charset="UTF-8">
   <title>Main Page</title>
 </head>
 <body>
-<body>
 
 
   <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-
-
-<div id="myModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">x</span>
-    <p>Please select your team and how much you want to bet.</p>
-
-    <form action="/placeBet" method="post">
-        <input type="radio" name="team" value="awayTeam" id="awayTeamBet" checked>
-        <input type="number" id="wagerAmount" name="amount"><br>
-        <input type="radio" name="team" value="homeTeam" id="homeTeamBet">
-        
-        <input type="submit" id="submitBet">
-
-
-    </form>
-
-  </div>
-
-</div>
 
 
 <div id="container">
@@ -169,7 +159,9 @@ ul.tab li a:focus, .active {background-color: #ccc;}
   <li><a href="#" id="weeks16" class="tablinks" onclick="openWeek(event, 'week16')">16</a></li>
   <li><a href="#" id="weeks17" class="tablinks" onclick="openWeek(event, 'week17')">17</a></li>
   <li><a href="#" id="weeks18" class="tablinks" onclick="openWeek(event, 'playoffs')">Playoffs</a></li>
-  <li><a href="#" id="weeks19" class="tablinks"></a></li>
+  <li><a href="#" id="seeBets" class="tablinks" onclick="openWeek(event, 'seeBets')">See Bets</a></li>
+  <li><strong>User</strong>: <%= user.local.email %> <br></li>
+  <li><strong>Balance</strong>: <%= user.balance %> <br></li>
 
 </ul>
 </div>
@@ -226,6 +218,27 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 </div>
 <div id="playoffs" class="tabcontent">
   <h3>Playoffs</h3>
+</div>
+<div id="seeBet" class="tabcontent">
+  <h3>See Bets</h3>
+</div>
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">x</span>
+    <p>Please select your team and how much you want to bet. The line is -110.</p>
+
+    <form action="/placeBet" method="post">
+        <input type="radio" name="team" value="awayTeam" id="awayTeamBet" checked>New England -10.5
+        <input type="number" id="wagerAmount" name="amount"><br>
+        <input type="radio" name="team" value="homeTeam" id="homeTeamBet">Cleveland +10.5
+        
+        <input type="submit" id="submitBet">
+
+    </form>
+
+  </div>
 
 </div>
 <script>
@@ -233,6 +246,19 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 // $.getJSON('/login', function(data) {
 //   console.log(data);
 // })
+$(document).on('click', '#seeBets', function(){
+ 
+    $.ajax({
+      type: "GET",
+      url: '/placeBet/' + data._id,
+      dataType: 'json',
+      data: {
+        _betId: bet._id
+      }
+    })
+
+})
+
 
 function openWeek(evt, weekNumber) {
     // Declare all variables
@@ -258,20 +284,21 @@ function openWeek(evt, weekNumber) {
 
     //makes the table for whichever week the person clicks on
     $('#week' + wNumber).empty();
-    $('#week' + wNumber).append('<h3>Week' + wNumber + '</h3><tr id="tableHeader"><td>Game</td><td>Line</td><td>Place Bet</td></tr>')
+    $('#week' + wNumber).append('<h3>Week ' + wNumber + ' Games</h3>')
 
     //gets the JSON for the specific week on each click
     $.getJSON('/main/' + wNumber, function(data) {
     	console.log(data)
     	for (var i=0; i<data.length; i++) {
-        if (data[i].homeLine) {
-        		$('#week' + wNumber).append('<tr class="awayTeams allTeams"><td>' + data[i].awayTeam + '</td><td>' + data[i].awayLine + '</td><td><button class="awayTeam" data-id="'+ data[i]._id + '">Place Bet!</button></td></tr><tr class="homeTeams allTeams"><td>@' + data[i].homeTeam + '</td><td>' + data[i].homeLine + '</td></tr>')
+        // if (data[i].homeLine) {
+        		$('#week' + wNumber).append('<tr class="awayTeams allTeams"><td>' + data[i].awayTeam + '</td><td>' + data[i].awayLine + '</td><td><button class="awayTeam" data-id="'+ data[i]._id + '">Place Bet!</button></td></tr><tr class="homeTeams allTeams"><td>@' + data[i].homeTeam + '</td><td>' + data[i].homeLine + '</td><td></td></tr>')
+            //$('button').attr('id', data[i]._id)
 
                         // Get the modal
             var modal = document.getElementById('myModal');
 
             // Get the button that opens the modal
-             var btn = $('button')
+            var btn = $('button')
             // console.log(btn);
             // $('button').on('click', function() {
             //   $.ajax({
@@ -288,15 +315,13 @@ function openWeek(evt, weekNumber) {
             var span = document.getElementsByClassName("close")[0];
 
             // When the user clicks on the button, open the modal and add the correct teams to the text
-
+            
             $(btn).on('click', function() {
-
                 modal.style.display = "block";
-                $('#awayTeamBet').after(data[i].awayTeam)
-                //$('#homeTeamBet').after(data[].homeTeam)
-
+              
             })
 
+            
             // When the user clicks on <span> (x), close the modal
             span.onclick = function() {
                 modal.style.display = "none";
@@ -306,25 +331,19 @@ function openWeek(evt, weekNumber) {
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
-                }
-            }
-          }else {
-            $('#week' + wNumber).append('<tr class="awayTeams allTeams"><td>' + data[i].awayTeam + '</td><td>N/A</td><td>No line yet.</td></tr><tr class="homeTeams allTeams"><td> @ ' + data[i].homeTeam + '</td><td>N/A</td><td>No line yet.</td></tr>')
-          }
+                } 
+    	     }
 
-
-    	}
-
-
-
+          // .then($('#week' + wNumber).append())
+      }
     })
-    // .then($('#week' + wNumber).append())
+  }
 
 
-}
+
 </script>
+<!-- 
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> -->
 
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><script src="app.js"></script>
- -->
 </body>
 </html>

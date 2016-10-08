@@ -13,7 +13,7 @@ var userSchema = mongoose.Schema({
      balance : {
         type: Number
      },
-     bet: {
+     _betId: {
         type: Schema.Types.ObjectId,
         ref: 'Bet'
      }
@@ -33,4 +33,4 @@ userSchema.methods.validPassword = function(password) {
 };
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema)
